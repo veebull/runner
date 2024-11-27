@@ -200,29 +200,28 @@ export class MainScene extends Phaser.Scene {
 
     // Check if running in Telegram Web App
     if (window.Telegram?.WebApp) {
-      // Request device motion access through Telegram WebApp
       const webapp = window.Telegram.WebApp
       
       if (webapp.DeviceOrientation) {
-        webapp.DeviceOrientation.start({
-          refresh_rate: 60, // 60fps for smooth control
-          need_absolute: false // We only need relative tilt
-        })
-        .then(() => {
+        try {
+          // Start device orientation tracking
+          webapp.DeviceOrientation.start({
+            refresh_rate: 60,
+            need_absolute: false
+          })
+          
           this.gyroEnabled = true
           
-          // Listen for orientation changes
+          // Add event listener for orientation changes
           webapp.onEvent('deviceOrientationChanged', () => {
-            if (webapp.DeviceOrientation) {
-              const gamma = webapp.DeviceOrientation.gamma // Left/Right tilt
-              if (gamma !== null) {
-                // Convert tilt to player movement
-                this.playerSpeed = gamma * 0.5
-              }
+            const orientation = webapp.DeviceOrientation
+            if (orientation && orientation.gamma !== null) {
+              this.playerSpeed = orientation.gamma * 0.5
             }
           })
-        })
-        .catch(console.error)
+        } catch (error) {
+          console.error('Failed to start device orientation:', error)
+        }
       }
     } else if (window.DeviceOrientationEvent) {
       // Fallback to browser DeviceOrientation API

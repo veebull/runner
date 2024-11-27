@@ -9,7 +9,7 @@ interface Window {
         start: (params: {
           refresh_rate?: number
           need_absolute?: boolean
-        }) => Promise<void>
+        }) => void
         stop: () => void
         gamma: number | null
         beta: number | null
