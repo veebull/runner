@@ -43,7 +43,7 @@ export class GameOverScene extends Phaser.Scene {
 
     buyButton.on('pointerdown', () => {
       // Implement Telegram payments here
-      const tg = window.Telegram.WebApp
+    //   const tg = window.Telegram.WebApp
       // You'll need to implement the payment logic with your bot
     })
 

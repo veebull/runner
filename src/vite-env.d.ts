@@ -5,7 +5,17 @@ interface Window {
     WebApp: {
       expand: () => void
       enableClosingConfirmation: () => void
-      // Add other Telegram WebApp methods as needed
+      DeviceOrientation?: {
+        start: (params: {
+          refresh_rate?: number
+          need_absolute?: boolean
+        }) => Promise<void>
+        stop: () => void
+        gamma: number | null
+        beta: number | null
+        alpha: number | null
+      }
+      onEvent: (eventName: string, callback: () => void) => void
     }
   }
 }

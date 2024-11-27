@@ -3,7 +3,7 @@ import Phaser from 'phaser'
 export class MainScene extends Phaser.Scene {
   private player!: Phaser.GameObjects.Sprite
   private obstacles!: Phaser.GameObjects.Group
-  private ground!: Phaser.GameObjects.TileSprite
+//   private ground!: Phaser.GameObjects.TileSprite
   private score: number = 0
   private lives: number = 3
   private scoreText!: Phaser.GameObjects.Text
@@ -19,7 +19,7 @@ export class MainScene extends Phaser.Scene {
   private spawnInterval: number = 2000
   private minSpawnInterval: number = 800
   private difficultyLevel: number = 1
-  private baseEnemyCount: number = 1
+//   private baseEnemyCount: number = 1
 
   constructor() {
     super({ key: 'MainScene' })
@@ -198,7 +198,34 @@ export class MainScene extends Phaser.Scene {
       })
     }
 
-    if (window.DeviceOrientationEvent) {
+    // Check if running in Telegram Web App
+    if (window.Telegram?.WebApp) {
+      // Request device motion access through Telegram WebApp
+      const webapp = window.Telegram.WebApp
+      
+      if (webapp.DeviceOrientation) {
+        webapp.DeviceOrientation.start({
+          refresh_rate: 60, // 60fps for smooth control
+          need_absolute: false // We only need relative tilt
+        })
+        .then(() => {
+          this.gyroEnabled = true
+          
+          // Listen for orientation changes
+          webapp.onEvent('deviceOrientationChanged', () => {
+            if (webapp.DeviceOrientation) {
+              const gamma = webapp.DeviceOrientation.gamma // Left/Right tilt
+              if (gamma !== null) {
+                // Convert tilt to player movement
+                this.playerSpeed = gamma * 0.5
+              }
+            }
+          })
+        })
+        .catch(console.error)
+      }
+    } else if (window.DeviceOrientationEvent) {
+      // Fallback to browser DeviceOrientation API
       if ((DeviceOrientationEvent as any).requestPermission) {
         (DeviceOrientationEvent as any).requestPermission()
           .then((response: string) => {

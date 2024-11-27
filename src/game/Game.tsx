@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
-import Phaser from 'phaser'
-import { MainScene } from './scenes/MainScene'
-import { GameOverScene } from './scenes/GameOverScene'
+import { useEffect } from 'react';
+import Phaser from 'phaser';
+import { MainScene } from './scenes/MainScene';
+import { GameOverScene } from './scenes/GameOverScene';
 
 export default function Game() {
   useEffect(() => {
@@ -17,19 +17,19 @@ export default function Game() {
       physics: {
         default: 'arcade',
         arcade: {
-          gravity: { y: 0 },
-          debug: false
-        }
+          gravity: { x: 0, y: 0 },
+          debug: false,
+        },
       },
-      scene: [MainScene, GameOverScene]
-    }
+      scene: [MainScene, GameOverScene],
+    };
 
-    const game = new Phaser.Game(config)
+    const game = new Phaser.Game(config);
 
     return () => {
-      game.destroy(true)
-    }
-  }, [])
+      game.destroy(true);
+    };
+  }, []);
 
-  return null
-} 
+  return null;
+}
