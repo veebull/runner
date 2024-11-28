@@ -5,6 +5,11 @@ interface Window {
     WebApp: {
       expand: () => void
       enableClosingConfirmation: () => void
+      requestFullscreen: () => void
+      exitFullscreen: () => void
+      lockOrientation: () => void
+      unlockOrientation: () => void
+      disableVerticalSwipes: () => void
       DeviceOrientation?: {
         start: (params: {
           refresh_rate?: number
